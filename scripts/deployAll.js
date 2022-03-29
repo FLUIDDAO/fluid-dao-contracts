@@ -18,27 +18,6 @@ async function main() {
 
     const wETH = "0x2f7249cb599139e560f0c81c269ab9b04799e453";
 
-    // const Authority = await ethers.getContractFactory("OlympusAuthority");
-    // const authority = await Authority.deploy(
-    //     deployer.address,
-    //     deployer.address,
-    //     deployer.address,
-    //     deployer.address
-    // );
-
-    // const Migrator = await ethers.getContractFactory("OlympusTokenMigrator");
-    // const migrator = await Migrator.deploy(
-    //     oldOHM,
-    //     oldsOHM,
-    //     oldTreasury,
-    //     oldStaking,
-    //     oldwsOHM,
-    //     sushiRouter,
-    //     uniRouter,
-    //     "0",
-    //     authority.address
-    // );
-
     const firstEpochNumber = "550";
     const firstBlockNumber = "9505000";
 
@@ -89,28 +68,6 @@ async function main() {
         firstEpochNumber //next epoch block
     );
     console.log("Distributor deployed to:", distributor.address);
-
-    // Initialize sohm
-    // await sOHM.setIndex("7675210820");
-    // await sOHM.setgOHM(gOHM.address);
-    // await sOHM.initialize(staking.address, olympusTreasury.address);
-
-    // await staking.setDistributor(distributor.address);
-
-    // await olympusTreasury.execute("0");
-    // await olympusTreasury.execute("1");
-    // await olympusTreasury.execute("2");
-    // await olympusTreasury.execute("3");
-    // await olympusTreasury.execute("4");
-
-    // console.log("Olympus Authority: ", authority.address);
-    // console.log("OHM: " + ohm.address);
-    // console.log("sOhm: " + sOHM.address);
-    // console.log("gOHM: " + gOHM.address);
-    // console.log("Olympus Treasury: " + olympusTreasury.address);
-    // console.log("Staking Contract: " + staking.address);
-    // console.log("Distributor: " + distributor.address);
-    // console.log("Migrator: " + migrator.address);
 }
 
 main()
