@@ -44,19 +44,24 @@ async function main() {
 
     const OHM = await ethers.getContractFactory("OlympusERC20Token");
     const ohm = await OHM.deploy();
+    console.log("OlympusERC20Token deployed to:", ohm.address);
 
     const SOHM = await ethers.getContractFactory("sOlympus");
     const sOHM = await SOHM.deploy();
+    console.log("sOlympus deployed to:", sOHM.address);
 
     const WSSQUID = await ethers.getContractFactory("wsSQUID");
     const wsSQUID = await WSSQUID.deploy(sOHM.address);
+    console.log("WSSQUID deployed to:", wsSQUID.address);
 
     // await migrator.setgOHM(WSSQUID.address);
     const WETHBondingCalculator = await ethers.getContractFactory("WETHBondingCalculator");
     const wethBondingCalculator = await WETHBondingCalculator.deploy(ohm.address);
+    console.log("WETHBondingCalculator deployed to:", wethBondingCalculator.address);
 
     const OlympusTreasury = await ethers.getContractFactory("OlympusTreasury");
-    const olympusTreasury = await OlympusTreasury.deploy(ohm.address, wETH, wethBondingCalculator);
+    const olympusTreasury = await OlympusTreasury.deploy(ohm.address, wETH, wethBondingCalculator.address, "2200");
+    console.log("OlympusTreasury deployed to:", olympusTreasury.address);
 
     // await olympusTreasury.queueTimelock("0", migrator.address, migrator.address);
     // await olympusTreasury.queueTimelock("8", migrator.address, migrator.address);
@@ -74,36 +79,38 @@ async function main() {
         firstEpochNumber,
         firstBlockNumber
     );
+    console.log("OlympusStaking deployed to:", staking.address);
 
-    const Distributor = await ethers.getContractFactory("Distributor");
+    const Distributor = await ethers.getContractFactory("contracts/StakingDistributor.sol:Distributor");
     const distributor = await Distributor.deploy(
         olympusTreasury.address,
         ohm.address,
         "2200", // epoch length4
         firstEpochNumber //next epoch block
     );
+    console.log("Distributor deployed to:", distributor.address);
 
     // Initialize sohm
-    await sOHM.setIndex("7675210820");
-    await sOHM.setgOHM(gOHM.address);
-    await sOHM.initialize(staking.address, olympusTreasury.address);
+    // await sOHM.setIndex("7675210820");
+    // await sOHM.setgOHM(gOHM.address);
+    // await sOHM.initialize(staking.address, olympusTreasury.address);
 
-    await staking.setDistributor(distributor.address);
+    // await staking.setDistributor(distributor.address);
 
-    await olympusTreasury.execute("0");
-    await olympusTreasury.execute("1");
-    await olympusTreasury.execute("2");
-    await olympusTreasury.execute("3");
-    await olympusTreasury.execute("4");
+    // await olympusTreasury.execute("0");
+    // await olympusTreasury.execute("1");
+    // await olympusTreasury.execute("2");
+    // await olympusTreasury.execute("3");
+    // await olympusTreasury.execute("4");
 
-    console.log("Olympus Authority: ", authority.address);
-    console.log("OHM: " + ohm.address);
-    console.log("sOhm: " + sOHM.address);
-    console.log("gOHM: " + gOHM.address);
-    console.log("Olympus Treasury: " + olympusTreasury.address);
-    console.log("Staking Contract: " + staking.address);
-    console.log("Distributor: " + distributor.address);
-    console.log("Migrator: " + migrator.address);
+    // console.log("Olympus Authority: ", authority.address);
+    // console.log("OHM: " + ohm.address);
+    // console.log("sOhm: " + sOHM.address);
+    // console.log("gOHM: " + gOHM.address);
+    // console.log("Olympus Treasury: " + olympusTreasury.address);
+    // console.log("Staking Contract: " + staking.address);
+    // console.log("Distributor: " + distributor.address);
+    // console.log("Migrator: " + migrator.address);
 }
 
 main()
