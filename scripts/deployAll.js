@@ -33,11 +33,6 @@ async function main() {
     const wsSQUID = await WSSQUID.deploy(sOHM.address);
     console.log("WSSQUID deployed to:", wsSQUID.address);
 
-    // await migrator.setgOHM(WSSQUID.address);
-    const WETHBondingCalculator = await ethers.getContractFactory("WETHBondingCalculator");
-    const wethBondingCalculator = await WETHBondingCalculator.deploy(ohm.address);
-    console.log("WETHBondingCalculator deployed to:", wethBondingCalculator.address);
-
     const OlympusTreasury = await ethers.getContractFactory("OlympusTreasury");
     const olympusTreasury = await OlympusTreasury.deploy(ohm.address, wETH, wethBondingCalculator.address, "2200");
     console.log("OlympusTreasury deployed to:", olympusTreasury.address);
@@ -60,6 +55,14 @@ async function main() {
     );
     console.log("OlympusStaking deployed to:", staking.address);
 
+    const StakingWarmup = await ethers.getContractFactory("StakingWarmup");
+    const stakingWarmup = await StakingWarmup.deploy(staking.address, sOHM.address);
+    console.log("StakingWarmup deployed to:", stakingWarmup.address);
+
+    const StakingHelper = await ethers.getContractFactory("StakingHelper");
+    const stakingHelper = await StakingHelper.deploy(staking.address, ohm.address);
+    console.log("StakingHelper deployed to:", stakingHelper.address);
+
     const Distributor = await ethers.getContractFactory("contracts/StakingDistributor.sol:Distributor");
     const distributor = await Distributor.deploy(
         olympusTreasury.address,
@@ -68,6 +71,19 @@ async function main() {
         firstEpochNumber //next epoch block
     );
     console.log("Distributor deployed to:", distributor.address);
+
+    const RedeemHelper = await ethers.getContractFactory("RedeemHelper");
+    const redeemHelper = await RedeemHelper.deploy();
+    console.log("RedeemHelper deployed to:", redeemHelper.address);
+
+    const WETHBondingCalculator = await ethers.getContractFactory("WETHBondingCalculator");
+    const wethBondingCalculator = await WETHBondingCalculator.deploy(ohm.address);
+    console.log("WETHBondingCalculator deployed to:", wethBondingCalculator.address);
+
+    const OlympusBondDepository = await ethers.getContractFactory("OlympusBondDepository");
+    const olympusBondDepository = await OlympusBondDepository.deploy(ohm.address, );
+    console.log("OlympusBondDepository deployed to:", olympusBondDepository.address);
+
 }
 
 main()
